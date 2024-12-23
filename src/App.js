@@ -3,7 +3,7 @@ import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPas
 import { TextField, Button } from '@mui/material';
 import './App.css';
 import { db } from './firebase.js';
-import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const auth = getAuth();
 const q = query(collection(db, 'recipes'), orderBy('timestamp', 'desc'));
@@ -16,6 +16,9 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false); // State to toggle between login and sign-up
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState('');
+  const [editDescription, setEditDescription] = useState('');
 
   // Handle login
   const handleLogin = async (e) => {
@@ -71,10 +74,11 @@ function App() {
     if (input && description) {
       await addDoc(collection(db, 'recipes'), {
         name: input,
-        description: 'description', // You can later modify to accept more fields
+        description: description, // Fix: Use state instead of hardcoded string
         timestamp: serverTimestamp(),
       });
       setInput('');
+      setDescription('');
     }
   };
 
@@ -89,6 +93,36 @@ function App() {
     }
   };
 
+  const editRecipe = (recipe) => {
+    setEditId(recipe.id);
+    setEditName(recipe.name);
+    setEditDescription(recipe.description);
+  };
+
+  const updateRecipe = async (e) => {
+    e.preventDefault();
+    if (editName && editDescription) {
+      try {
+        await updateDoc(doc(db, 'recipes', editId), {
+          name: editName,
+          description: editDescription,
+          timestamp: serverTimestamp(),
+        });
+        setEditId(null);
+        setEditName('');
+        setEditDescription('');
+      } catch (error) {
+        console.error('Error updating recipe:', error.message);
+      }
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditId(null);
+    setEditName('');
+    setEditDescription('');
+  };
+
   return (
     <div className="App">
       <h2>Recipe Management App</h2>
@@ -96,7 +130,6 @@ function App() {
       {/* Login / Sign-Up Form */}
       {!user ? (
         <>
-          {/* Sign-Up Form (only show if isSignUp is true) */}
           {isSignUp ? (
             <form onSubmit={handleSignUp}>
               <TextField
@@ -120,7 +153,6 @@ function App() {
               </p>
             </form>
           ) : (
-            // Login Form
             <form onSubmit={handleLogin}>
               <TextField
                 label="Email"
@@ -145,27 +177,33 @@ function App() {
           )}
         </>
       ) : (
-        // Show the recipes list and logout option when the user is logged in
         <>
           <h3>Welcome, {user.email}</h3>
           <Button variant="contained" color="secondary" onClick={handleLogout}>Logout</Button>
 
-          <form onSubmit={addRecipe}>
+          <form onSubmit={editId ? updateRecipe : addRecipe}>
             <TextField
               label="Recipe Name"
               variant="outlined"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              value={editId ? editName : input}
+              onChange={(e) => (editId ? setEditName(e.target.value) : setInput(e.target.value))}
               style={{ margin: '5px' }}
             />
             <TextField
               label="Description"
               variant="outlined"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={editId ? editDescription : description}
+              onChange={(e) => (editId ? setEditDescription(e.target.value) : setDescription(e.target.value))}
               style={{ margin: '5px' }}
             />
-            <Button variant="contained" color="primary" type="submit">Add Recipe</Button>
+            <Button variant="contained" color="primary" type="submit">
+              {editId ? 'Update Recipe' : 'Add Recipe'}
+            </Button>
+            {editId && (
+              <Button variant="outlined" color="secondary" onClick={() => cancelEdit()}>
+                Cancel
+              </Button>
+            )}
           </form>
 
           <ul>
@@ -173,12 +211,11 @@ function App() {
               <li key={recipe.id}>
                 <h4>{recipe.name}</h4>
                 <p>{recipe.description}</p>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => deleteRecipe(recipe.id)}
-                >
+                <Button variant="outlined" color="secondary" onClick={() => deleteRecipe(recipe.id)}>
                   Delete
+                </Button>
+                <Button variant="outlined" color="primary" onClick={() => editRecipe(recipe)}>
+                  Edit
                 </Button>
               </li>
             ))}
