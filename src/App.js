@@ -3,7 +3,7 @@ import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPas
 import { TextField, Button } from '@mui/material';
 import './App.css';
 import { db } from './firebase.js';
-import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc } from 'firebase/firestore';
 
 const auth = getAuth();
 const q = query(collection(db, 'recipes'), orderBy('timestamp', 'desc'));
@@ -75,6 +75,17 @@ function App() {
         timestamp: serverTimestamp(),
       });
       setInput('');
+    }
+  };
+
+  const deleteRecipe = async (id) => {
+    if (window.confirm('Are you sure you want to delete this recipe?')) {
+      try {
+        await deleteDoc(doc(db, 'recipes', id));
+        console.log('Recipe deleted successfully');
+      } catch (error) {
+        console.error('Error deleting recipe:', error);
+      }
     }
   };
 
@@ -162,6 +173,13 @@ function App() {
               <li key={recipe.id}>
                 <h4>{recipe.name}</h4>
                 <p>{recipe.description}</p>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => deleteRecipe(recipe.id)}
+                >
+                  Delete
+                </Button>
               </li>
             ))}
           </ul>
