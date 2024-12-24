@@ -2,37 +2,220 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),  url('background.jpg');
+  background-size: cover;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Container for the login and signup pages */
+.auth-container {
+  display: flex;
+  justify-content: left;
+  margin-left: 10%;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  opacity: 90%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Form styles */
+.auth-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  opacity: 100%;
+}
+
+/* Form title */
+.auth-form h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Input field styles */
+.auth-form .MuiTextField-root {
+  width: 90%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+/* Button styles */
+.auth-form button {
+  width: 40%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background-color: #45a049;
+}
+
+/* Links between login and signup */
+.auth-form p {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.auth-form p a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.auth-form p a:hover {
+  text-decoration: underline;
+}
+
+/* Error message styles */
+.auth-form .error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Styling for the recipe list container */
+.recipe-list {
+  list-style-type: none; /* Remove default bullet points */
+  padding: 0;
+  margin: 20px auto;
+  max-width: 600px; /* Center and constrain width */
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  gap: 20px; /* Space between items */
+}
+
+/* Styling for each recipe item */
+.recipe-item {
+  background-color: rgba(255, 255, 255, 0.8); /* Light background color */
+  border: 1px solid #e0e0e0; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px; /* Inner padding */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effects */
+}
+
+/* Hover effect for recipe item */
+.recipe-item:hover {
+  transform: translateY(-5px); /* Slightly lift on hover */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow */
+}
+
+/* Styling for recipe name (h4) */
+.recipe-item h4 {
+  margin: 0;
+  color: #333; /* Dark text color */
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* Styling for recipe description (p) */
+.recipe-item p {
+  margin: 10px 0;
+  color: #666; /* Subtle text color */
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+/* Button styles within each recipe item */
+.recipe-item .MuiButton-root {
+  margin-right: 10px; /* Space between buttons */
+  font-size: 0.9em;
+  text-transform: capitalize; /* Use normal case for text */
+}
+
+.recipe-item .MuiButton-outlinedSecondary:hover {
+  background-color: #d32f2f;
+  color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+
+.recipe-item .MuiButton-outlinedPrimary:hover {
+  background-color: #1976d2; /* Edit button color */
+  color: #e0e0e0;
+  border-color: #e0e0e0; /* Edit button border */
+}
+
+/* Specific colors for buttons */
+.recipe-item .MuiButton-outlinedSecondary {
+  color: #d32f2f; /* Delete button color */
+  border-color: #d32f2f; /* Delete button border */
+}
+
+.recipe-item .MuiButton-outlinedPrimary {
+  color: #1976d2; /* Edit button color */
+  border-color: #1976d2; /* Edit button border */
+}
+
+/* Styling the welcome message */
+.welcome-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#e0e0e0;
+  font-family:'Courier New', Courier, monospace;
+  margin-top: 30px;
+}
+
+.welcome-message .MuiButton-root {
+  margin-left: 75px;
+  background-color: #f85449;
+  transition: background-color 0.3s ease-in-out
+}
+
+.welcome-message .MuiButton-root:hover {
+  background-color: #d62828;
+}
+
+/* Recipe form container */
+.recipe-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.App-link {
-  color: #61dafb;
+/* Form inputs */
+.recipe-form .MuiTextField-root {
+  width: 95%;
+  margin-bottom: 15px;
+  padding: 5px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Form buttons */
+.recipe-form .MuiButton-root {
+  margin: 5px;
+  width: 45%;
+}
+
+.recipe-form .MuiButton-containedPrimary {
+  background-color: #2196f3;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.recipe-form .MuiButton-containedPrimary:hover {
+  background-color: #1976d2;
+}
+
+.recipe-form .MuiButton-outlinedSecondary {
+  border-color: #e63946;
+  color: #e63946;
+}
+
+.recipe-form .MuiButton-outlinedSecondary:hover {
+  border-color: #d62828;
+  color: #d62828;
 }

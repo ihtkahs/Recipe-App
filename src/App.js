@@ -5,6 +5,7 @@ import './App.css';
 import { db } from './firebase.js';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
+
 const auth = getAuth();
 const q = query(collection(db, 'recipes'), orderBy('timestamp', 'desc'));
 
@@ -124,14 +125,15 @@ function App() {
   };
 
   return (
+
     <div className="App">
-      <h2>Recipe Management App</h2>
 
       {/* Login / Sign-Up Form */}
       {!user ? (
-        <>
+        <div className="auth-container">
           {isSignUp ? (
-            <form onSubmit={handleSignUp}>
+            <form onSubmit={handleSignUp} className="auth-form">
+              <h2>Recipe App</h2>
               <TextField
                 label="Email"
                 variant="outlined"
@@ -153,7 +155,8 @@ function App() {
               </p>
             </form>
           ) : (
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="auth-form">
+              <h2>Recipe App</h2>
               <TextField
                 label="Email"
                 variant="outlined"
@@ -175,13 +178,14 @@ function App() {
               </p>
             </form>
           )}
-        </>
+        </div>
       ) : (
         <>
-          <h3>Welcome, {user.email}</h3>
-          <Button variant="contained" color="secondary" onClick={handleLogout}>Logout</Button>
-
-          <form onSubmit={editId ? updateRecipe : addRecipe}>
+          <div className="welcome-message">
+            <h3>Welcome, {user.email}</h3>
+            <Button variant="contained" onClick={handleLogout}>Logout</Button>
+          </div>
+          <form onSubmit={editId ? updateRecipe : addRecipe} className="recipe-form">
             <TextField
               label="Recipe Name"
               variant="outlined"
@@ -205,21 +209,22 @@ function App() {
               </Button>
             )}
           </form>
-
-          <ul>
-            {recipes.map((recipe) => (
-              <li key={recipe.id}>
-                <h4>{recipe.name}</h4>
-                <p>{recipe.description}</p>
-                <Button variant="outlined" color="secondary" onClick={() => deleteRecipe(recipe.id)}>
-                  Delete
-                </Button>
-                <Button variant="outlined" color="primary" onClick={() => editRecipe(recipe)}>
-                  Edit
-                </Button>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <ul className="recipe-list">
+              {recipes.map((recipe) => (
+                <li key={recipe.id} className="recipe-item">
+                  <h4>{recipe.name}</h4>
+                  <p>{recipe.description}</p>
+                  <Button variant="outlined" color="secondary" onClick={() => deleteRecipe(recipe.id)}>
+                    Delete
+                  </Button>
+                  <Button variant="outlined" color="primary" onClick={() => editRecipe(recipe)}>
+                    Edit
+                  </Button>
+                </li>
+              ))}
+              </ul>
+            </div>
         </>
       )}
     </div>
