@@ -1,9 +1,5 @@
-# In production🏃‍♀💨
-
-
-
-## Website link
-https://magical-malasada-738bbb.netlify.app/
+## Website link 🏃‍♀💨
+https://recipeapp251004.netlify.app/
 
 ## Available Scripts
 
