@@ -5,7 +5,7 @@ import { db } from './firebase';
 import AuthForm from './components/AuthForm';
 import RecipeForm from './components/RecipeForm';
 import RecipeList from './components/RecipeList';
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import './App.css';
 
 const auth = getAuth();
